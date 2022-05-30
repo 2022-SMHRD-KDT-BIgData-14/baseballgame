@@ -31,7 +31,7 @@ public class Login_Join {
 			String pw = dto.getPw();
 			String name = dto.getName();
 			
-			String sql = "insert into from member values (?, ?, ?)";
+			String sql = "insert into jointest values (?, ?, ?)";
 
 			psmt = conn.prepareStatement(sql);
 			
@@ -86,7 +86,7 @@ public class Login_Join {
 			
 			conn = DriverManager.getConnection(url, db_id, db_pw);
 			
-			String sql = "select pw from member where id = ?";
+			String sql = "select pw from jointest where id = ?";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getId());

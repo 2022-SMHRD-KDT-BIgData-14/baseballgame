@@ -4,6 +4,11 @@ public class DTO {
 
 	private String id, pw, name, teamName;	
 	
+	public DTO(String id, String pw) {
+		this.id = id;
+		this.pw = pw;
+	}
+	
 	public DTO(String id, String pw, String name) {
 		this.id = id;
 		this.pw = pw;
