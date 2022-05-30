@@ -1,0 +1,1 @@
+create table joinTbl (name, pw, nick);
