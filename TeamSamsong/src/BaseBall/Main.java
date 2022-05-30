@@ -58,11 +58,10 @@ public class Main {
 			}
 			
 			if (num == 6) {
-
 			}
 			
 			if (num == 7) {
-
+				System.out.println("게임을 종료합니다.");
 			}
 
 		}
