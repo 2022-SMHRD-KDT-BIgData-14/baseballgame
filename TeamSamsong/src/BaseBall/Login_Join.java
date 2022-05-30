@@ -21,9 +21,9 @@ public class Login_Join {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
-			String db_id = "hr";
-			String db_pw = "hr";	
+			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
+			String db_id = "campus_f_0516_5";
+			String db_pw = "smhrd5";	
 			
 			conn = DriverManager.getConnection(url, db_id, db_pw);
 			
@@ -31,7 +31,7 @@ public class Login_Join {
 			String pw = dto.getPw();
 			String name = dto.getName();
 			
-			String sql = "insert into jointest values (?, ?, ?)";
+			String sql = "insert into user_info values (?, ?, ?)";
 
 			psmt = conn.prepareStatement(sql);
 			
@@ -80,13 +80,13 @@ public class Login_Join {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
-			String db_id = "hr";
-			String db_pw = "hr";	
+			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
+			String db_id = "campus_f_0516_5";
+			String db_pw = "smhrd5";	
 			
 			conn = DriverManager.getConnection(url, db_id, db_pw);
 			
-			String sql = "select pw from jointest where id = ?";
+			String sql = "select pw from user_info where id = ?";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getId());

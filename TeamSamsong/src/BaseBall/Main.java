@@ -9,13 +9,15 @@ public class Main {
 		Scanner input = new Scanner(System.in);	
 		Login_Join lj;
 		DTO dto;
+		
 		String inID;
 		String inPW;
 		String inName;
 		
-		System.out.println("[1]회원가입 [2]로그인");
-		int num = input.nextInt();
-		
+		while(true) {
+			System.out.println("[1]회원 가입 [2]로그인 [3]팀 선택 [4]팀 변경 [5]게임 실행 [6]랭킹 조회 [7]게임 종료");
+			System.out.print("메뉴를 선택하세요 >> ");
+			int num = input.nextInt();		
 		
 			if(num == 1) {
 				System.out.print("ID 입력 >> ");
@@ -42,7 +44,27 @@ public class Main {
 				dto = new DTO(inID, inPW);
 				lj.Login(dto);
 			}
-		
-		
+			
+			if (num == 3) {
+				
+			}
+			
+			if (num == 4) {
+
+			}
+			
+			if (num == 5) {
+
+			}
+			
+			if (num == 6) {
+
+			}
+			
+			if (num == 7) {
+
+			}
+
+		}
 	}
 }
