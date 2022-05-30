@@ -86,7 +86,7 @@ public class Login_Join {
 			
 			conn = DriverManager.getConnection(url, db_id, db_pw);
 			
-			String sql = "select pw from player_info where id = ?";
+			String sql = "select p_pw from player_info where p_id = ?";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getId());
