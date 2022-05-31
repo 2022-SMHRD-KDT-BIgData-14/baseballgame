@@ -45,6 +45,7 @@ public class Main {
 					
 					if (num == 1) {
 						while(true) {
+							
 							System.out.print("닉네임을 입력하세요 >> ");
 							inName = input.next();
 							
