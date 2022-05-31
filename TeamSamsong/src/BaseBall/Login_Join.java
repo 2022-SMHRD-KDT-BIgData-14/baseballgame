@@ -31,7 +31,7 @@ public class Login_Join {
 			String pw = dto.getPw();
 			String name = dto.getName();
 			
-			String sql = "insert into player_info values (?, ?, ?)";
+			String sql = "insert into player_info values (?, ?, ?, null)";
 
 			psmt = conn.prepareStatement(sql);
 			
