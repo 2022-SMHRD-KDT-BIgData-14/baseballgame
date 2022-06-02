@@ -1,146 +1,144 @@
 package BaseBall;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DAO {
-	
+
 	int a;
 	int cnt;
 	int teamId;
 	String Id;
 	String pw;
 	String nickname;
-	Connection conn;  //DB 연결 객체
-	PreparedStatement psmt;  //SQL문 전달받아 실행하는 객체
-	ResultSet rs;  //Query의 결과값을 받아오는 객체
-	
-	public String Login(DTO dto) {		
+	Connection conn; // DB 연결 객체
+	PreparedStatement psmt; // SQL문 전달받아 실행하는 객체
+	ResultSet rs; // Query의 결과값을 받아오는 객체
+
+	public String Login(DTO dto) {
 		cnt = 0;
 		conn = null;
 		psmt = null;
-		
+
 		Connection();
-		
+
 		try {
 			String sql = "select pw from player_info where id = ?";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getId());
 			rs = psmt.executeQuery();
-			
+
 			if (rs.next()) {
-				pw = rs.getString(1);				
-			}			
-		}		
-		catch (SQLException e) {
+				pw = rs.getString(1);
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
-		
-		finally {			
+		}
+
+		finally {
 			UnConnection();
 		}
 		return pw;
 	}
-	
+
 	public void Join(DTO dto) {
 		cnt = 0;
 		conn = null;
 		psmt = null;
-		
+
 		Connection();
-		
+
 		try {
 			String id = dto.getId();
 			String pw = dto.getPw();
 			String name = dto.getName();
-			
+
 			String sql = "insert into player_info values (?, ?, ?, null, null)";
 
 			psmt = conn.prepareStatement(sql);
-			
-			psmt.setString(1, id);			
+
+			psmt.setString(1, id);
 			psmt.setString(2, pw);
-			psmt.setString(3, name);	
-			
-			cnt = psmt.executeUpdate();			
-		}		
-		catch (SQLException e) {
+			psmt.setString(3, name);
+
+			cnt = psmt.executeUpdate();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		finally {
 			UnConnection();
 		}
-	}		
-	
+	}
+
 	public String I_Check(DTO dto) {
 		conn = null;
 		psmt = null;
-		
-		Connection();		
-		
+
+		Connection();
+
 		try {
 			String id = dto.getId();
-			
+
 			String sql = "select id from player_info";
 
 			psmt = conn.prepareStatement(sql);
-			rs = psmt.executeQuery();			
-			
-			while(rs.next()) {
+			rs = psmt.executeQuery();
+
+			while (rs.next()) {
 				if (id.equals(rs.getString(1))) {
-					Id = rs.getString(1);							
+					Id = rs.getString(1);
 				}
 			}
-		}		
-		catch (SQLException e) {			
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
-		
-		finally {			
+		}
+
+		finally {
 			UnConnection();
 		}
 		return Id;
 	}
-	
+
 	public String Name_Check(DTO dto) {
 		conn = null;
 		psmt = null;
-		
-		Connection();		
-		
+
+		Connection();
+
 		try {
 			String name = dto.getId();
-			
+
 			String sql = "select nickname from player_info";
 
 			psmt = conn.prepareStatement(sql);
-			rs = psmt.executeQuery();			
-			
-			while(rs.next()) {
+			rs = psmt.executeQuery();
+
+			while (rs.next()) {
 				if (name.equals(rs.getString(1))) {
-					nickname = rs.getString(1);							
+					nickname = rs.getString(1);
 				}
 			}
-		}		
-		catch (SQLException e) {			
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
-		
-		finally {			
+		}
+
+		finally {
 			UnConnection();
 		}
 		return nickname;
 	}
-	
+
 	public void Team_Info(int teamNum) {
-		
-		Main main;		
-		
+
+		Main main;
+
 		if (teamNum == 1) {
 			System.out.println("SSG 랜더스 팀을 선택하셨습니다");
 
@@ -349,69 +347,67 @@ public class DAO {
 				System.out.print("☆");
 			}
 			System.out.println();
-			
+
 		}
-		
-		else if (teamNum < 1 || teamNum > 10){	
+
+		else if (teamNum < 1 || teamNum > 10) {
 			System.out.println("올바른 선택이 필요합니다!!");
 			System.out.println("다시 선택해 주세요.");
-			
+
 			main = new Main();
-			main.sleep(800);			
-		}		
-	}	
-	
+			main.sleep(800);
+		}
+	}
+
 	public int T_Check(DTO dto) {
 		conn = null;
 		psmt = null;
-		
+
 		Connection();
-		
-		try {	
-			String sql = "select teamid from player_info where nickname = ?";
+
+		try {
+			String sql = "select team_id from player_info where nickname = ?";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getName());
 			rs = psmt.executeQuery();
-			
+
 			if (rs.next()) {
-				teamId = rs.getInt(1);				
-			}	
-		}		
-		catch (SQLException e) {
+				teamId = rs.getInt(1);
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		finally {
 			UnConnection();
 		}
-		return teamId;	
+		return teamId;
 	}
-	
-	public void Choose(DTO dto) {		
+
+	public void Choose(DTO dto) {
 		cnt = 0;
 		conn = null;
 		psmt = null;
-		
+
 		Connection();
-		
-		try {		
+
+		try {
 			String name = dto.getName();
 			int teamId = dto.getTeamId();
-				
+
 			String sql = "update player_info set teamid = ? where nickname = ?";
 
 			psmt = conn.prepareStatement(sql);
-				
+
 			psmt.setInt(1, teamId);
-			psmt.setString(2, name);	
-				
-			cnt = psmt.executeUpdate();	
-		}		
-		catch (SQLException e) {
+			psmt.setString(2, name);
+
+			cnt = psmt.executeUpdate();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-			
+
 		finally {
 			UnConnection();
 		}
@@ -421,7 +417,7 @@ public class DAO {
 		cnt = 0;
 		conn = null;
 		psmt = null;
-			
+
 		Connection();
 
 		try {
@@ -436,8 +432,8 @@ public class DAO {
 			if (rs.next()) {
 				nickname = rs.getString(1);
 			}
-		}		
-		catch (SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
@@ -446,7 +442,7 @@ public class DAO {
 		}
 		return nickname;
 	}
-	
+
 	public class Play {
 
 	}
@@ -454,21 +450,19 @@ public class DAO {
 	private void Connection() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-		
+
 			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
 			String db_id = "campus_f_0516_5";
-			String db_pw = "smhrd5";	
-		
-			conn = DriverManager.getConnection(url, db_id, db_pw);			
-		}		
-		catch (ClassNotFoundException e) {
+			String db_pw = "smhrd5";
+
+			conn = DriverManager.getConnection(url, db_id, db_pw);
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void UnConnection() {
 		try {
 			if (rs != null) {
@@ -482,9 +476,125 @@ public class DAO {
 			if (conn != null) {
 				conn.close();
 			}
-		}			
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void athlete(DTO dto) {
+
+		cnt = 0;
+		try {
+
+			Connection();
+			String sql = "select * from athlete a, player_info p where p.team_id = a.team_id and p.nickname = ? and a.attack!=0";
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, dto.getName());
+			rs = psmt.executeQuery();
+			System.out.print("NAME" + "\t");
+			System.out.print("ATTACK" + "\t");
+			System.out.println();
+			while (rs.next()) {
+				String name = rs.getString("name");
+				String attack = rs.getString("attack");
+				System.out.print(name + "\t");
+				System.out.print("  " + attack + "\t");
+				System.out.println();
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("DB 접속 실패");
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (psmt != null) {
+					psmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void athlete_sub(DTO dto) {
+
+		cnt = 0;
+		try {
+
+			Connection();
+			String sql = "select * from athlete where team_id != (select team_id from PLAYER_INFO where nickname = ?) and defense > 0";
+
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, dto.getName());
+			rs = psmt.executeQuery();
+
+			System.out.println("상대 투수 등판!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (psmt != null) {
+					psmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void athlete_sub2(DTO dto) {
+
+		cnt = 0;
+		try {
+
+			Connection();
+			String sql = "select * from athlete a, player_info p where p.team_id = a.team_id and p.nickname =? and back_number=?";
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, dto.getName());
+			psmt.setInt(2, dto.getBack_number());
+			rs = psmt.executeQuery();
+
+			while (rs.next()) {
+				String name = rs.getString("name");
+				String back = rs.getString("back_number");
+				System.out.print(name + "\t");
+				System.out.print(back + "\t");
+				System.out.println();
+			}
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("DB 접속 실패");
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (psmt != null) {
+					psmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }
