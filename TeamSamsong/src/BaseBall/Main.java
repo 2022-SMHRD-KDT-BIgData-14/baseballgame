@@ -184,6 +184,8 @@ public class Main extends Thread {
 
 					if (inID.equals(rsId)) {
 						System.out.println("이미 사용 중인 ID 입니다!!");
+						System.out.println("다른 ID를 입력해 주세요.");
+						sleep(700);
 						continue;
 					}
 					
