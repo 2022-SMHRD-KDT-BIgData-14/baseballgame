@@ -60,12 +60,15 @@ public class Main extends Thread {
 							inName = input.next();							
 							
 							dao = new DAO();
-							dto = new DTO(inName);
+							dto = new DTO(inID, inPW, inName);
 							int rs = dao.T_Check(dto);
+							String rsNick = dao.N_Check(dto);							
 							
 							//닉네임이 틀리다면 다시 입력
-							if(num == 0) {
-								
+							if(inName != rsNick) {
+								System.out.println("닉네임이 올바르지 않습니다!!");
+								System.out.println("다시 입력해 주세요.");
+								sleep(700);
 								continue;
 							}
 							

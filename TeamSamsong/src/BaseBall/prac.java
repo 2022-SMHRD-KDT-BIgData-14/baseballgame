@@ -16,13 +16,19 @@ public class prac {
 		String inName;
 		int teamNum;
 		
+		System.out.print("ID를 입력하세요 >> ");
+		inID = input.next();
+		System.out.print("PW를 입력하세요 >> ");
+		inPW = input.next();
+		
 		System.out.print("닉네임을 입력하세요 >> ");
 		inName = input.next();
 		
 		dao = new DAO();
-		dto = new DTO(inName);
+		dto = new DTO(inID, inPW, inName);
 		int rs = dao.T_Check(dto);
+		String rsNick = dao.N_Check(dto);
 		
-		System.out.println(rs);
+		System.out.println(rsNick);
 	}
 }

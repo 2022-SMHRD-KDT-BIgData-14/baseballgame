@@ -10,6 +10,7 @@ public class DAO {
 	
 	int cnt;
 	int teamId;
+	String nickname;
 	Connection conn;  //DB 연결 객체
 	PreparedStatement psmt;  //SQL문 전달받아 실행하는 객체
 	ResultSet rs;  //Query의 결과값을 받아오는 객체
@@ -371,7 +372,7 @@ public class DAO {
 		}
 	}
 
-	public void N_Check(DTO dto) {
+	public String N_Check(DTO dto) {
 		cnt = 0;
 		conn = null;
 		psmt = null;
@@ -379,18 +380,16 @@ public class DAO {
 		Connection();
 
 		try {
-			String name = dto.getName();
+			String id = dto.getId();
 
-			String sql = "select p_team from player_info where p_nickname = ?";
+			String sql = "select p_nickname from player_info where p_id = ?";
 
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, name);
+			psmt.setString(1, id);
 			rs = psmt.executeQuery();
 
 			if (rs.next()) {
-				if (rs.getInt(1) != 0) {
-					
-				}
+				nickname = rs.getString(1);
 			}
 		}		
 		catch (SQLException e) {
@@ -400,6 +399,7 @@ public class DAO {
 		finally {
 			UnConnection();
 		}
+		return nickname;
 	}
 	
 	public class Play {
