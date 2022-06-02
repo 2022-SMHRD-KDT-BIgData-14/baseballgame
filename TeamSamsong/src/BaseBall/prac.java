@@ -9,11 +9,7 @@ public class prac {
 		Scanner input = new Scanner(System.in);
 		
 		DTO dto;
-		Join join;
-		Login login;				
-		Choose tc;
-		Team_Info ti;
-		Play play;
+		DAO dao;
 		
 		String inID;
 		String inPW;
@@ -23,9 +19,9 @@ public class prac {
 		System.out.print("닉네임을 입력하세요 >> ");
 		inName = input.next();
 		
-		ti = new Team_Info();
+		dao = new DAO();
 		dto = new DTO(inName);
-		int rs = ti.T_Check(dto);
+		int rs = dao.T_Check(dto);
 		
 		System.out.println(rs);
 	}

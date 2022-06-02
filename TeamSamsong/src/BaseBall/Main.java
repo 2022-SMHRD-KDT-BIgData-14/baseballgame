@@ -9,11 +9,7 @@ public class Main extends Thread {
 		Scanner input = new Scanner(System.in);
 		
 		DTO dto;
-		Join join;
-		Login login;				
-		Choose tc;
-		Team_Info ti;
-		Play play;
+		DAO dao;
 		
 		String inID;
 		String inPW;
@@ -40,9 +36,9 @@ public class Main extends Thread {
 				System.out.print("PW를 입력하세요 >> ");
 				inPW = input.next();
 				
-				login = new Login();
+				dao = new DAO();
 				dto = new DTO(inID, inPW);
-				login.Login(dto);				
+				dao.Login(dto);				
 				
 				if (num == 1) {					
 					System.out.println("★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆");
@@ -63,12 +59,13 @@ public class Main extends Thread {
 							System.out.print("닉네임을 입력하세요 >> ");
 							inName = input.next();							
 							
-							ti = new Team_Info();
+							dao = new DAO();
 							dto = new DTO(inName);
-							int rs = ti.T_Check(dto);
+							int rs = dao.T_Check(dto);
 							
 							//닉네임이 틀리다면 다시 입력
-							if(num == 0) {							
+							if(num == 0) {
+								
 								continue;
 							}
 							
@@ -92,12 +89,12 @@ public class Main extends Thread {
 							System.out.print("팀[번호]을 선택하세요 >> ");
 							teamNum = input.nextInt();							
 							
-							tc = new Choose();
+							dao = new DAO();
 							dto = new DTO(inName, teamNum);
-							tc.Choose(dto);
+							dao.Choose(dto);
 							
-							ti = new Team_Info();							
-							ti.Team_Info(teamNum);							
+							dao = new DAO();							
+							dao.Team_Info(teamNum);							
 							
 							if (teamNum < 1 || teamNum > 10) {
 								continue;
@@ -150,9 +147,9 @@ public class Main extends Thread {
 				System.out.print("NAME 입력 >> ");
 				inName = input.next();
 				
-				join = new Join();
+				dao = new DAO();
 				dto = new DTO(inID, inPW, inName);
-				join.Join(dto);
+				dao.Join(dto);
 			}			
 			
 			if (num == 3) {				
