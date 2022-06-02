@@ -65,7 +65,7 @@ public class Main extends Thread {
 							String rsNick = dao.N_Check(dto);							
 							
 							//닉네임이 틀리다면 다시 입력
-							if(inName != rsNick) {
+							if(!inName.equals(rsNick)) {
 								System.out.println("닉네임이 올바르지 않습니다!!");
 								System.out.println("다시 입력해 주세요.");
 								sleep(700);
