@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 public class DAO {
 	
-	int a;
 	int cnt;
 	int teamId;
 	String Id;
@@ -114,7 +113,7 @@ public class DAO {
 		Connection();		
 		
 		try {
-			String name = dto.getId();
+			String name = dto.getName();
 			
 			String sql = "select nickname from player_info";
 
@@ -128,7 +127,7 @@ public class DAO {
 			}
 		}		
 		catch (SQLException e) {			
-			e.printStackTrace();
+			System.out.println("중복된 닉네임 입니다!!");
 		}		
 		
 		finally {			
@@ -368,7 +367,7 @@ public class DAO {
 		Connection();
 		
 		try {	
-			String sql = "select teamid from player_info where nickname = ?";
+			String sql = "select team_id from player_info where nickname = ?";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getName());
@@ -376,7 +375,8 @@ public class DAO {
 			
 			if (rs.next()) {
 				teamId = rs.getInt(1);				
-			}	
+			}
+			
 		}		
 		catch (SQLException e) {
 			e.printStackTrace();

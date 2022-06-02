@@ -48,7 +48,9 @@ public class Main extends Thread {
 						continue;
 					}					
 					if (rsLogin.equals(inPW)) {
-						System.out.println("로그인 성공");
+						System.out.println("★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆");
+						System.out.printf("         %s님 어서오세요. 환영합니다!!      ", inID);
+						System.out.println("\n☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★");
 					}
 					else if (!rsLogin.equals(inPW)){
 						System.out.println("로그인 실패...");
@@ -60,11 +62,7 @@ public class Main extends Thread {
 					break;
 				}
 				
-				if (num == 1) {					
-					System.out.println("★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆");
-					System.out.printf("         %s님 어서오세요. 환영합니다!!      ", inID);
-					System.out.println("\n☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★");
-					
+				if (num == 1) {						
 					System.out.println("┌───────────────────────────────────────┐");
 					System.out.println("│              Search Menu              │");
 					System.out.println("├───────────────────────────────────────┤");
@@ -168,20 +166,27 @@ public class Main extends Thread {
 				System.out.println("│             J   O   I   N             │");
 				System.out.println("└───────────────────────────────────────┘");
 				
-				while (true){
+				while (true){					
 					System.out.print("ID 입력 >> ");
 					inID = input.next();
+					if (inID.equals("-1")){
+						break;
+					}
 					System.out.print("PW 입력 >> ");
 					inPW = input.next();
+					if (inPW.equals("-1")){
+						break;
+					}
 					System.out.print("NAME 입력 >> ");
 					inName = input.next();
-
+					if (inName.equals("-1")){
+						break;
+					}					
+					
 					dao = new DAO();
 					dto = new DTO(inID, inPW, inName);
-					dao.Join(dto);
-					String rsId = dao.I_Check(dto);
-					String rsName = dao.Name_Check(dto);				
-
+					
+					String rsId = dao.I_Check(dto);					
 					if (inID.equals(rsId)) {
 						System.out.println("이미 사용 중인 ID 입니다!!");
 						System.out.println("다른 ID를 입력해 주세요.");
@@ -189,18 +194,21 @@ public class Main extends Thread {
 						continue;
 					}
 					
+					String rsName = dao.Name_Check(dto);
+					if (inName.equals(rsName)) {
+						System.out.println("이미 사용 중인 닉네임입니다!!");
+						System.out.println("다른 닉네임을 입력해 주세요.");
+						sleep(700);
+						continue;										
+					}
+					
 					if (!inID.equals(rsId)) {
 						if (!inName.equals(rsName)) {
-							System.out.println("회원 가입이 완료되었습니다!!");
-							break;
-						}
-						else if (inName.equals(rsName)) {
-							System.out.println("이미 사용 중인 닉네임입니다!!");
-							System.out.println("다른 닉네임을 입력해 주세요.");
-							sleep(700);
-							continue;
-						}						
+							dao.Join(dto);
+							System.out.println("회원 가입이 완료되었습니다.");
+						}	
 					}					
+					break;
 				}
 			}			
 			
@@ -210,7 +218,7 @@ public class Main extends Thread {
 				sleep(800);
 			}
 			
-			else {
+			else if(num < 1 || num > 3){
 				System.out.println("올바른 선택이 필요합니다!!");
 				System.out.println("다시 입력해 주세요.");
 				sleep(800);
