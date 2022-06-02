@@ -14,21 +14,14 @@ public class DAO {
 	PreparedStatement psmt;  //SQL문 전달받아 실행하는 객체
 	ResultSet rs;  //Query의 결과값을 받아오는 객체
 	
-	public void Login(DTO dto) {
-		
+	public void Login(DTO dto) {		
 		cnt = 0;
 		conn = null;
 		psmt = null;
 		
+		Connection();
+		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
-			String db_id = "campus_f_0516_5";
-			String db_pw = "smhrd5";	
-			
-			conn = DriverManager.getConnection(url, db_id, db_pw);
-			
 			String sql = "select p_pw from player_info where p_id = ?";
 
 			psmt = conn.prepareStatement(sql);
@@ -46,34 +39,13 @@ public class DAO {
 					System.out.println("아이디 혹은 비밀번호를 확인해주세요!!");
 				}
 			}	
-		}
-		
-		catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		}		
 		catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}		
 		
-		finally {
-
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-
-				if (psmt != null) {
-					psmt.close();
-				}
-
-				if (conn != null) {
-					conn.close();
-				}
-			} 
-			
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
+		finally {			
+			UnConnection();
 		}
 	}
 	
@@ -86,15 +58,9 @@ public class DAO {
 		conn = null;
 		psmt = null;
 		
+		Connection();
+		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
-			String db_id = "campus_f_0516_5";
-			String db_pw = "smhrd5";	
-			
-			conn = DriverManager.getConnection(url, db_id, db_pw);
-			
 			String id = dto.getId();
 			String pw = dto.getPw();
 			String name = dto.getName();
@@ -108,37 +74,16 @@ public class DAO {
 			psmt.setString(3, name);	
 			
 			cnt = psmt.executeUpdate();
-		}
-		
-		catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		}		
 		catch (SQLException e) {
 			System.out.println("이미 존재하는 ID 입니다!!");
 			System.out.println("다른 ID로 회원가입 해주세요.");
 		}
 		
 		finally {
-
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-
-				if (psmt != null) {
-					psmt.close();
-				}
-
-				if (conn != null) {
-					conn.close();
-				}
-			} 
-			
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
+			UnConnection();
 		}
-	}
+	}		
 	
 	public void J_Check() {
 		
@@ -374,15 +319,9 @@ public class DAO {
 		conn = null;
 		psmt = null;
 		
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
-			String db_id = "campus_f_0516_5";
-			String db_pw = "smhrd5";	
-			
-			conn = DriverManager.getConnection(url, db_id, db_pw);
-			
+		Connection();
+		
+		try {	
 			String sql = "select p_team from player_info where p_nickname = ?";
 
 			psmt = conn.prepareStatement(sql);
@@ -392,108 +331,54 @@ public class DAO {
 			if (rs.next()) {
 				teamId = rs.getInt(1);				
 			}	
-		}
-		
-		catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		}		
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-
-				if (psmt != null) {
-					psmt.close();
-				}
-
-				if (conn != null) {
-					conn.close();
-				}
-			} 
-			
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
+			UnConnection();
 		}
 		return teamId;	
 	}
 	
-	public void Choose(DTO dto) {
-		
+	public void Choose(DTO dto) {		
 		cnt = 0;
 		conn = null;
 		psmt = null;
 		
-			try {
-				Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection();
 		
-				String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
-				String db_id = "campus_f_0516_5";
-				String db_pw = "smhrd5";	
-			
-				conn = DriverManager.getConnection(url, db_id, db_pw);	
+		try {		
+			String name = dto.getName();
+			int teamId = dto.getTeamId();
 				
-				String name = dto.getName();
-				int teamId = dto.getTeamId();
-				
-				String sql = "update player_info set p_team = ? where p_nickname = ?";
+			String sql = "update player_info set p_team = ? where p_nickname = ?";
 
-				psmt = conn.prepareStatement(sql);
+			psmt = conn.prepareStatement(sql);
 				
-				psmt.setInt(1, teamId);
-				psmt.setString(2, name);	
+			psmt.setInt(1, teamId);
+			psmt.setString(2, name);	
 				
-				cnt = psmt.executeUpdate();	
-			}
-			
-			catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			finally {
-
-				try {
-					if (rs != null) {
-						rs.close();
-					}
-
-					if (psmt != null) {
-						psmt.close();
-					}
-
-					if (conn != null) {
-						conn.close();
-					}
-				} 
-				
-				catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			cnt = psmt.executeUpdate();	
+		}		
+		catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-	public void C_Check(DTO dto) {
+			
+		finally {
+			UnConnection();
+		}
+	}
+
+	public void N_Check(DTO dto) {
 		cnt = 0;
 		conn = null;
 		psmt = null;
 			
+		Connection();
+
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-
-			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
-			String db_id = "campus_f_0516_5";
-			String db_pw = "smhrd5";
-
-			conn = DriverManager.getConnection(url, db_id, db_pw);
-
 			String name = dto.getName();
 
 			String sql = "select p_team from player_info where p_nickname = ?";
@@ -507,36 +392,54 @@ public class DAO {
 					
 				}
 			}
-		}
-
-		catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
+		}		
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-
-				if (psmt != null) {
-					psmt.close();
-				}
-
-				if (conn != null) {
-					conn.close();
-				}
-			}
-
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
+			UnConnection();
 		}
 	}
 	
 	public class Play {
 
+	}
+
+	private void Connection() {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		
+			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
+			String db_id = "campus_f_0516_5";
+			String db_pw = "smhrd5";	
+		
+			conn = DriverManager.getConnection(url, db_id, db_pw);			
+		}		
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void UnConnection() {
+		try {
+			if (rs != null) {
+				rs.close();
+			}
+
+			if (psmt != null) {
+				psmt.close();
+			}
+
+			if (conn != null) {
+				conn.close();
+			}
+		}			
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
