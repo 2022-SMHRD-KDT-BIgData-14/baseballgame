@@ -98,35 +98,40 @@ public class Main extends Thread {
 								System.out.println("├───────  이미 팀이 등록되어 있습니다!!  ───────┤");       
 								System.out.println("├─────────   다음 메뉴로 이동합니다　　─────────┤"); 
 								System.out.println("└───────────────────────────────────────┘");
+								sleep(800);
 								break;
 							}
 							
-							System.out.println("================= 팀 목록 =================");
-							System.out.print("      [1]SSG 랜더스\t[2]키움 히어로즈" + "\n" 
-										   + "      [3]KIA 타이거즈\t[4]LG 트윈스" + "\n"
-										   + "      [5]두산 베어스\t[6]삼성 라이온즈" + "\n"
-										   + "      [7]롯데 자이언츠\t[8]KT 위즈" + "\n"
-										   + "      [9]LG 트윈스\t[10]NC 다이노스" + "\n");
-							System.out.println("=========================================");
+							while(true) {
+								System.out.println("================= 팀 목록 =================");
+								System.out.print("      [1]SSG 랜더스\t[2]키움 히어로즈" + "\n" 
+											+ "      [3]KIA 타이거즈\t[4]LG 트윈스" + "\n"
+											+ "      [5]두산 베어스\t[6]삼성 라이온즈" + "\n"
+											+ "      [7]롯데 자이언츠\t[8]KT 위즈" + "\n"
+											+ "      [9]LG 트윈스\t[10]NC 다이노스" + "\n");
+								System.out.println("=========================================");
 							
-							System.out.print("팀[번호]을 선택하세요 >> ");
-							teamNum = input.nextInt();							
+								System.out.print("팀[번호]을 선택하세요 >> ");
+								teamNum = input.nextInt();							
 							
-							dao = new DAO();
-							dto = new DTO(inName, teamNum);
-							dao.Choose(dto);
+								dao = new DAO();
+								dto = new DTO(inName, teamNum);
+								dao.Choose(dto);
 							
-							dao = new DAO();							
-							dao.Team_Info(teamNum);							
+								dao = new DAO();							
+								dao.Team_Info(teamNum);							
 							
-							if (teamNum < 1 || teamNum > 10) {
-								continue;
+								if (teamNum < 1 || teamNum > 10) {
+									continue;
+								}
+								
+								System.out.println("팀 등록이 완료되었습니다!!");
+								break;
 							}
-							
 							break;
 						}
 						
-						while (true) {
+						while(true) {
 							System.out.println("┌───────────────────────────────────────┐");
 							System.out.println("│               Game Menu               │");
 							System.out.println("├───────────────────────────────────────┤");
@@ -175,11 +180,23 @@ public class Main extends Thread {
 					dto = new DTO(inID, inPW, inName);
 					dao.Join(dto);
 					String rsId = dao.I_Check(dto);
+					String rsName = dao.Name_Check(dto);				
 
-					if (!inID.equals(rsId)) {
-						System.out.println("회원 가입이 완료되었습니다!!");
-						break;
+					if (inID.equals(rsId)) {
+						System.out.println("이미 사용 중인 ID 입니다!!");
+						continue;
 					}
+					
+					if (!inID.equals(rsId)) {
+						if (!inName.equals(rsName)) {
+							System.out.println("회원 가입이 완료되었습니다!!");
+							break;
+						}
+						else if (inName.equals(rsName)) {
+							System.out.println("이미 사용 중인 닉네임입니다!!");
+							continue;
+						}						
+					}					
 				}
 			}			
 			

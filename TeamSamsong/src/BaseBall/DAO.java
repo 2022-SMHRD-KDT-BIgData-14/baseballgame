@@ -25,7 +25,7 @@ public class DAO {
 		Connection();
 		
 		try {
-			String sql = "select p_pw from player_info where p_id = ?";
+			String sql = "select pw from player_info where id = ?";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getId());
@@ -85,7 +85,7 @@ public class DAO {
 		try {
 			String id = dto.getId();
 			
-			String sql = "select p_id from player_info";
+			String sql = "select id from player_info";
 
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();			
@@ -104,6 +104,36 @@ public class DAO {
 			UnConnection();
 		}
 		return Id;
+	}
+	
+	public String Name_Check(DTO dto) {
+		conn = null;
+		psmt = null;
+		
+		Connection();		
+		
+		try {
+			String name = dto.getId();
+			
+			String sql = "select nickname from player_info";
+
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();			
+			
+			while(rs.next()) {
+				if (name.equals(rs.getString(1))) {
+					nickname = rs.getString(1);							
+				}
+			}
+		}		
+		catch (SQLException e) {			
+			e.printStackTrace();
+		}		
+		
+		finally {			
+			UnConnection();
+		}
+		return nickname;
 	}
 	
 	public void Team_Info(int teamNum) {
@@ -327,9 +357,7 @@ public class DAO {
 			
 			main = new Main();
 			main.sleep(800);			
-		}
-		
-		System.out.println("팀 등록이 완료되었습니다!!");
+		}		
 	}	
 	
 	public int T_Check(DTO dto) {
@@ -339,7 +367,7 @@ public class DAO {
 		Connection();
 		
 		try {	
-			String sql = "select p_team from player_info where p_nickname = ?";
+			String sql = "select teamid from player_info where nickname = ?";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getName());
@@ -370,7 +398,7 @@ public class DAO {
 			String name = dto.getName();
 			int teamId = dto.getTeamId();
 				
-			String sql = "update player_info set p_team = ? where p_nickname = ?";
+			String sql = "update player_info set teamid = ? where nickname = ?";
 
 			psmt = conn.prepareStatement(sql);
 				
@@ -398,7 +426,7 @@ public class DAO {
 		try {
 			String id = dto.getId();
 
-			String sql = "select p_nickname from player_info where p_id = ?";
+			String sql = "select nickname from player_info where id = ?";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, id);
