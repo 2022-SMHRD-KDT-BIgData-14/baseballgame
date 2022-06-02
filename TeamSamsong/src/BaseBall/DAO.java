@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 public class DAO {
 	
+	int a;
 	int cnt;
 	int teamId;
 	String Id;

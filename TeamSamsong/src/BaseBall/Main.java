@@ -196,6 +196,8 @@ public class Main extends Thread {
 						}
 						else if (inName.equals(rsName)) {
 							System.out.println("이미 사용 중인 닉네임입니다!!");
+							System.out.println("다른 닉네임을 입력해 주세요.");
+							sleep(700);
 							continue;
 						}						
 					}					

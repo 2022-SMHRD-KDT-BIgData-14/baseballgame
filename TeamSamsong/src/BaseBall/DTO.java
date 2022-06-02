@@ -5,9 +5,6 @@ public class DTO {
 	private String id, pw, name;
 	private int teamId;
 	
-	public DTO(int teamId) {
-		this.teamId = teamId;		
-	}
 	public DTO(String name) {
 		this.name = name;		
 	}
