@@ -31,14 +31,34 @@ public class Main extends Thread {
 				System.out.println("│           L   O   G   I   N           │");
 				System.out.println("└───────────────────────────────────────┘");
 				
-				System.out.print("ID를 입력하세요 >> ");
-				inID = input.next();
-				System.out.print("PW를 입력하세요 >> ");
-				inPW = input.next();
+				while(true) {
+					System.out.print("ID를 입력하세요 >> ");
+					inID = input.next();
+					System.out.print("PW를 입력하세요 >> ");
+					inPW = input.next();
 				
-				dao = new DAO();
-				dto = new DTO(inID, inPW);
-				dao.Login(dto);				
+					dao = new DAO();
+					dto = new DTO(inID, inPW);				
+					String rsLogin = dao.Login(dto);
+					String rsID = dao.Login(dto);
+					
+					if (rsID == null) {
+						System.out.println("존재하는 ID가 아닙니다!!");
+						sleep(700);
+						continue;
+					}					
+					if (rsLogin.equals(inPW)) {
+						System.out.println("로그인 성공");
+					}
+					else if (!rsLogin.equals(inPW)){
+						System.out.println("로그인 실패...");
+						System.out.println("PW를 다시 확인해 주세요!!");
+						System.out.println("다시 입력해 주세요.");
+						sleep(700);
+						continue;
+					}
+					break;
+				}
 				
 				if (num == 1) {					
 					System.out.println("★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆");
@@ -141,24 +161,32 @@ public class Main extends Thread {
 			if (num == 2) {
 				System.out.println("┌───────────────────────────────────────┐");
 				System.out.println("│             J   O   I   N             │");
-				System.out.println("└───────────────────────────────────────┘");			
+				System.out.println("└───────────────────────────────────────┘");
 				
-				System.out.print("ID 입력 >> ");
-				inID = input.next();
-				System.out.print("PW 입력 >> ");
-				inPW = input.next();
-				System.out.print("NAME 입력 >> ");
-				inName = input.next();
-				
-				dao = new DAO();
-				dto = new DTO(inID, inPW, inName);
-				dao.Join(dto);
+				while (true){
+					System.out.print("ID 입력 >> ");
+					inID = input.next();
+					System.out.print("PW 입력 >> ");
+					inPW = input.next();
+					System.out.print("NAME 입력 >> ");
+					inName = input.next();
+
+					dao = new DAO();
+					dto = new DTO(inID, inPW, inName);
+					dao.Join(dto);
+					String rsId = dao.I_Check(dto);
+
+					if (!inID.equals(rsId)) {
+						System.out.println("회원 가입이 완료되었습니다!!");
+						break;
+					}
+				}
 			}			
 			
 			if (num == 3) {				
 				System.out.println("게임을 종료합니다.");	
 				System.out.println("감사합니다.");
-				sleep(800);				
+				sleep(800);
 			}
 			
 			else {

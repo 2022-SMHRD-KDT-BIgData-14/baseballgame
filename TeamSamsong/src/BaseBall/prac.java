@@ -26,9 +26,8 @@ public class prac {
 		
 		dao = new DAO();
 		dto = new DTO(inID, inPW, inName);
-		int rs = dao.T_Check(dto);
-		String rsNick = dao.N_Check(dto);
+		String rsId = dao.I_Check(dto);
 		
-		System.out.println(rsNick);
+		System.out.println(rsId);
 	}
 }

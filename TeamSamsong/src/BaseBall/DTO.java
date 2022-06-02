@@ -3,11 +3,7 @@ package BaseBall;
 public class DTO {
 
 	private String id, pw, name;
-	private int teamId;
-	
-	public DTO(int teamid) {
-		this.teamId = teamId;
-	}
+	private int teamId;	
 	
 	public DTO(String name) {
 		this.name = name;		

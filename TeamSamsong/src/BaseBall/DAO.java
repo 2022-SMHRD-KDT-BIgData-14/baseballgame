@@ -10,12 +10,14 @@ public class DAO {
 	
 	int cnt;
 	int teamId;
+	String Id;
+	String pw;
 	String nickname;
 	Connection conn;  //DB 연결 객체
 	PreparedStatement psmt;  //SQL문 전달받아 실행하는 객체
 	ResultSet rs;  //Query의 결과값을 받아오는 객체
 	
-	public void Login(DTO dto) {		
+	public String Login(DTO dto) {		
 		cnt = 0;
 		conn = null;
 		psmt = null;
@@ -30,16 +32,8 @@ public class DAO {
 			rs = psmt.executeQuery();
 			
 			if (rs.next()) {
-				String loginPW = rs.getString(1);
-				
-				if (loginPW.equals(dto.getPw())) {
-					System.out.println("로그인 성공!!");
-				}
-				else {
-					System.out.println("로그인 실패...");
-					System.out.println("아이디 혹은 비밀번호를 확인해주세요!!");
-				}
-			}	
+				pw = rs.getString(1);				
+			}			
 		}		
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -48,10 +42,7 @@ public class DAO {
 		finally {			
 			UnConnection();
 		}
-	}
-	
-	public void L_Check() {
-		
+		return pw;
 	}
 	
 	public void Join(DTO dto) {
@@ -66,7 +57,7 @@ public class DAO {
 			String pw = dto.getPw();
 			String name = dto.getName();
 			
-			String sql = "insert into player_info values (?, ?, ?, null)";
+			String sql = "insert into player_info values (?, ?, ?, null, null)";
 
 			psmt = conn.prepareStatement(sql);
 			
@@ -74,11 +65,10 @@ public class DAO {
 			psmt.setString(2, pw);
 			psmt.setString(3, name);	
 			
-			cnt = psmt.executeUpdate();
+			cnt = psmt.executeUpdate();			
 		}		
 		catch (SQLException e) {
-			System.out.println("이미 존재하는 ID 입니다!!");
-			System.out.println("다른 ID로 회원가입 해주세요.");
+			e.printStackTrace();
 		}
 		
 		finally {
@@ -86,8 +76,34 @@ public class DAO {
 		}
 	}		
 	
-	public void J_Check() {
+	public String I_Check(DTO dto) {
+		conn = null;
+		psmt = null;
 		
+		Connection();		
+		
+		try {
+			String id = dto.getId();
+			
+			String sql = "select p_id from player_info";
+
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();			
+			
+			while(rs.next()) {
+				if (id.equals(rs.getString(1))) {
+					Id = rs.getString(1);							
+				}
+			}
+		}		
+		catch (SQLException e) {			
+			e.printStackTrace();
+		}		
+		
+		finally {			
+			UnConnection();
+		}
+		return Id;
 	}
 	
 	public void Team_Info(int teamNum) {
