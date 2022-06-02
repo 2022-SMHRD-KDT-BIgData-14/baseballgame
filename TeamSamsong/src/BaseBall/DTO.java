@@ -5,6 +5,10 @@ public class DTO {
 	private String id, pw, name;
 	private int teamId;
 	
+	public DTO(String name) {
+		this.name = name;		
+	}
+	
 	public DTO(String name, int teamId) {
 		this.name = name;
 		this.teamId = teamId;

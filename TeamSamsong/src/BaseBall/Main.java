@@ -2,15 +2,18 @@ package BaseBall;
 
 import java.util.Scanner;
 
-public class Main {
+public class Main extends Thread {
 
 	public static void main(String[] args) {
 		
 		Scanner input = new Scanner(System.in);
 		
-		Login_Join lj;
 		DTO dto;
-		TeamChoose tc;
+		Join join;
+		Login login;				
+		Choose tc;
+		Team_Info ti;
+		Play play;
 		
 		String inID;
 		String inPW;
@@ -18,277 +21,98 @@ public class Main {
 		int teamNum;
 		
 		while(true) {
-			System.out.println("[1]·Î±×ÀÎ [2]È¸¿ø °¡ÀÔ [3]Á¾·á");
+			System.out.println("¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤");
+			System.out.println("¦¢               Main Menu               ¦¢");
+			System.out.println("¦§¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©");
+			System.out.println("¦¢       [1]·Î±×ÀÎ  [2]È¸¿ø °¡ÀÔ  [3]Á¾·á      ¦¢");
+			System.out.println("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥");
+			
 			System.out.print("¸Þ´º¸¦ ¼±ÅÃÇÏ¼¼¿ä >> ");
 			int num = input.nextInt();		
 		
 			if(num == 1) {
+				System.out.println("¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤");
+				System.out.println("¦¢           L   O   G   I   N           ¦¢");
+				System.out.println("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥");
+				
 				System.out.print("ID¸¦ ÀÔ·ÂÇÏ¼¼¿ä >> ");
 				inID = input.next();
 				System.out.print("PW¸¦ ÀÔ·ÂÇÏ¼¼¿ä >> ");
 				inPW = input.next();
 				
-				lj = new Login_Join();
+				login = new Login();
 				dto = new DTO(inID, inPW);
-				lj.Login(dto);				
+				login.Login(dto);				
 				
-				if (inPW != "") {
+				if (num == 1) {					
+					System.out.println("¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù");
+					System.out.printf("         %s´Ô ¾î¼­¿À¼¼¿ä. È¯¿µÇÕ´Ï´Ù!!      ", inID);
+					System.out.println("\n¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú¡Ù¡Ú");
 					
-				}
-				
-				if (num == 1) {
-					//int[] playerArr = new int[5];
-					System.out.println(inID + "´Ô È¯¿µÇÕ´Ï´Ù. ¾î¼­¿À¼¼¿ä!");
-					System.out.println("[1]ÆÀ ¼±ÅÃ [2]·©Å· Á¶È¸ [3]½ºÆó¼È »Ì±â");					
+					System.out.println("¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤");
+					System.out.println("¦¢              Search Menu              ¦¢");
+					System.out.println("¦§¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©");
+					System.out.println("¦¢     [1]ÆÀ ¼±ÅÃ  [2]¼±¼ö Á¶È¸  [3]·©Å· Á¶È¸ ¡¡ ¦¢");
+					System.out.println("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥");
+					
 					System.out.print("¸Þ´º¸¦ ¼±ÅÃÇÏ¼¼¿ä >> ");
 					num = input.nextInt();
 					
-					if (num == 1) {
+					if (num == 1) {						
 						while(true) {
-							
 							System.out.print("´Ð³×ÀÓÀ» ÀÔ·ÂÇÏ¼¼¿ä >> ");
-							inName = input.next();
+							inName = input.next();							
 							
-							System.out.println("==================== ÆÀ ¸ñ·Ï ====================");
-							System.out.print("[1]SSG ·£´õ½º\t   [2]Å°¿ò È÷¾î·ÎÁî" + "\n" 
-										   + "[3]KIA Å¸ÀÌ°ÅÁî\t   [4]LG Æ®À©½º" + "\n"
-										   + "[5]µÎ»ê º£¾î½º\t   [6]»ï¼º ¶óÀÌ¿ÂÁî" + "\n"
-										   + "[7]·Ôµ¥ ÀÚÀÌ¾ðÃ÷\t   [8]KT À§Áî" + "\n"
-										   + "[9]LG Æ®À©½º\t   [10]NC ´ÙÀÌ³ë½º" + "\n");
-							System.out.println("===============================================");
+							ti = new Team_Info();
+							dto = new DTO(inName);
+							int rs = ti.T_Check(dto);
+							
+							//´Ð³×ÀÓÀÌ Æ²¸®´Ù¸é ´Ù½Ã ÀÔ·Â
+							if(num == 0) {							
+								continue;
+							}
+							
+							//ÀÌ¹Ì ÆÀÀÌ Á¸ÀçÇÑ´Ù¸é ÆÀ ¼±ÅÃ X
+							if(rs != 0) {
+								System.out.println("¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤");
+								System.out.println("¦§¦¡¦¡¦¡¦¡¦¡¦¡¦¡  ÀÌ¹Ì ÆÀÀÌ µî·ÏµÇ¾î ÀÖ½À´Ï´Ù!!  ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©");       
+								System.out.println("¦§¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡   ´ÙÀ½ ¸Þ´º·Î ÀÌµ¿ÇÕ´Ï´Ù¡¡¡¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©"); 
+								System.out.println("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥");
+								break;
+							}
+							
+							System.out.println("================= ÆÀ ¸ñ·Ï =================");
+							System.out.print("      [1]SSG ·£´õ½º\t[2]Å°¿ò È÷¾î·ÎÁî" + "\n" 
+										   + "      [3]KIA Å¸ÀÌ°ÅÁî\t[4]LG Æ®À©½º" + "\n"
+										   + "      [5]µÎ»ê º£¾î½º\t[6]»ï¼º ¶óÀÌ¿ÂÁî" + "\n"
+										   + "      [7]·Ôµ¥ ÀÚÀÌ¾ðÃ÷\t[8]KT À§Áî" + "\n"
+										   + "      [9]LG Æ®À©½º\t[10]NC ´ÙÀÌ³ë½º" + "\n");
+							System.out.println("=========================================");
 							
 							System.out.print("ÆÀ[¹øÈ£]À» ¼±ÅÃÇÏ¼¼¿ä >> ");
 							teamNum = input.nextInt();							
 							
-							tc = new TeamChoose();
+							tc = new Choose();
 							dto = new DTO(inName, teamNum);
 							tc.Choose(dto);
 							
-							if (teamNum == 1) {
-								System.out.println("SSG ·£´õ½º ÆÀÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-								
-								System.out.print("ATT : ");		
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}	
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}		
-								System.out.println();
-								
-								System.out.print("DEF : ");
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}	
-								System.out.println();
-								// ¼±¼ö ´É·ÂÄ¡ ºÎ¿©
-								//for (int j = 0; j < athlete.length; j++) {
-								//	athlete[j] = rand.nextInt(15) + 60;
-								//}
-								// ¼±¼ö DB¿¡ »ðÀÔ
-							} 
+							ti = new Team_Info();							
+							ti.Team_Info(teamNum);							
 							
-							else if (teamNum == 2) {
-								System.out.println("Å°¿ò È÷¾î·ÎÁî ÆÀÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-								System.out.print("ATT : ");		
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}	
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}		
-								System.out.println();
-								
-								System.out.print("DEF : ");
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}	
-								System.out.println();
-							}
-							
-							else if (teamNum == 3) {
-								System.out.println("±â¾Æ Å¸ÀÌ°ÅÁî ÆÀÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-								System.out.print("ATT : ");		
-								for (int k = 0; k < 4; k++) {
-									System.out.print("¡Ú");
-								}	
-								for (int k = 0; k < 1; k++) {
-									System.out.print("¡Ù");
-								}		
-								System.out.println();
-								
-								System.out.print("DEF : ");
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}	
-								System.out.println();
-
-							}
-							
-							else if (teamNum == 4) {
-								System.out.println("LG Æ®À©½º ÆÀÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-								System.out.print("ATT : ");		
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}	
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}		
-								System.out.println();
-								
-								System.out.print("DEF : ");
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}	
-								System.out.println();
-
-							} 
-							
-							else if (teamNum == 5) {
-								System.out.println("µÎ»ê º£¾î½º ÆÀÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-								System.out.print("ATT : ");		
-								for (int k = 0; k < 5; k++) {
-									System.out.print("¡Ú");
-								}									
-								System.out.println();
-								
-								System.out.print("DEF : ");
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}	
-								System.out.println();
-							}
-							
-							else if (teamNum == 6) {
-								System.out.println("»ï¼º ¶óÀÌ¿ÂÁî ÆÀÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-								System.out.print("ATT : ");		
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}	
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}		
-								System.out.println();
-								
-								System.out.print("DEF : ");
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}	
-								System.out.println();								
-							}
-							
-							else if (teamNum == 7) {
-								System.out.println("·Ôµ¥ ÀÚÀÌ¾ðÃ÷ ÆÀÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-								System.out.print("ATT : ");		
-								for (int k = 0; k < 4; k++) {
-									System.out.print("¡Ú");
-								}	
-								for (int k = 0; k < 1; k++) {
-									System.out.print("¡Ù");
-								}		
-								System.out.println();
-								
-								System.out.print("DEF : ");
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}	
-								System.out.println();
-							}
-							
-							else if (teamNum == 8) {
-								System.out.println("KT À§Áî ÆÀÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-								System.out.print("ATT : ");		
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ú");
-								}	
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ù");
-								}		
-								System.out.println();
-								
-								System.out.print("DEF : ");
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}	
-								System.out.println();
-							} 
-							
-							else if (teamNum == 9) {
-								System.out.println("ÇÑÈ­ ÀÌ±Û½º ÆÀÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-								System.out.print("ATT : ");		
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}	
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}		
-								System.out.println();
-								
-								System.out.print("DEF : ");
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}	
-								System.out.println();
-							}
-							
-							else if (teamNum == 10) {
-								System.out.println("NC ´ÙÀÌ³ë½º ÆÀÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-								System.out.print("ATT : ");		
-								for (int k = 0; k < 4; k++) {
-									System.out.print("¡Ú");
-								}	
-								for (int k = 0; k < 1; k++) {
-									System.out.print("¡Ù");
-								}		
-								System.out.println();
-								
-								System.out.print("DEF : ");
-								for (int k = 0; k < 3; k++) {
-									System.out.print("¡Ú");
-								}
-								for (int k = 0; k < 2; k++) {
-									System.out.print("¡Ù");
-								}	
-								System.out.println();
-							}
-							
-							else {
-								System.out.println("¿Ã¹Ù¸¥ ¼±ÅÃÀÌ ÇÊ¿äÇÕ´Ï´Ù!!");
+							if (teamNum < 1 || teamNum > 10) {
 								continue;
-							}							
-							break;							
-						}						
-						System.out.println("ÆÀ µî·ÏÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!!");
+							}
+							
+							break;
+						}
 						
 						while (true) {
-							System.out.println("[1]°ÔÀÓ ÁøÇà [2]¼±¼ö Á¶È¸ [3]ÀÌÀü ¸Þ´º");							
+							System.out.println("¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤");
+							System.out.println("¦¢               Game Menu               ¦¢");
+							System.out.println("¦§¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©");
+							System.out.println("¦¢    [1]°ÔÀÓ ÁøÇà [2]½ºÆä¼È »Ì±â [3]ÀÌÀü ¸Þ´º¡¡ ¡¡¦¢");
+							System.out.println("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥");
+							
 							System.out.print("¸Þ´º¸¦ ¼±ÅÃÇÏ¼¼¿ä >> ");
 							num = input.nextInt();
 							
@@ -305,15 +129,20 @@ public class Main {
 							}
 							
 							else {
-								System.out.println("Àß¸ø¼±ÅÃÇÏ¼Ì½À´Ï´Ù");
-
+								System.out.println("¿Ã¹Ù¸¥ ¼±ÅÃÀÌ ÇÊ¿äÇÕ´Ï´Ù!!");
+								System.out.println("´Ù½Ã ÀÔ·ÂÇØ ÁÖ¼¼¿ä.");
+								sleep(800);
 							}
 						}
 					}					
 				}
 			}
 			
-			if (num == 2) {				
+			if (num == 2) {
+				System.out.println("¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤");
+				System.out.println("¦¢             J   O   I   N             ¦¢");
+				System.out.println("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥");			
+				
 				System.out.print("ID ÀÔ·Â >> ");
 				inID = input.next();
 				System.out.print("PW ÀÔ·Â >> ");
@@ -321,17 +150,31 @@ public class Main {
 				System.out.print("NAME ÀÔ·Â >> ");
 				inName = input.next();
 				
-				lj = new Login_Join();
+				join = new Join();
 				dto = new DTO(inID, inPW, inName);
-				lj.Join(dto);
-				
-				System.out.println("È¸¿ø°¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!!");
+				join.Join(dto);
 			}			
 			
 			if (num == 3) {				
 				System.out.println("°ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù.");	
 				System.out.println("°¨»çÇÕ´Ï´Ù.");
+				sleep(800);				
 			}
+			
+			else {
+				System.out.println("¿Ã¹Ù¸¥ ¼±ÅÃÀÌ ÇÊ¿äÇÕ´Ï´Ù!!");
+				System.out.println("´Ù½Ã ÀÔ·ÂÇØ ÁÖ¼¼¿ä.");
+				sleep(800);
+			}
+		}
+	}
+	
+	public static void sleep(int time) {
+		try {
+			Thread.sleep(time);
+		} 
+		catch (Exception e) {
+			System.out.println("Àá½Ã¸¸ ±â´Ù·ÁÁÖ¼¼¿ä!!");
 		}
 	}
 }

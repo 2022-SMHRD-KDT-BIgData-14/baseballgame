@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TeamChoose {
+public class Choose {
 	
 	int cnt;
 	Connection conn;
@@ -70,60 +70,60 @@ public class TeamChoose {
 		}
 	}
 	
-	public void Choose_bool(DTO dto) {
+	public void C_check(DTO dto) {
 		cnt = 0;
 		conn = null;
 		psmt = null;
 		
-			try {
-				Class.forName("oracle.jdbc.driver.OracleDriver");
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
 		
-				String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
-				String db_id = "campus_f_0516_5";
-				String db_pw = "smhrd5";	
+			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
+			String db_id = "campus_f_0516_5";
+			String db_pw = "smhrd5";	
 			
-				conn = DriverManager.getConnection(url, db_id, db_pw);	
-				
-				int teamId = dto.getTeamId();
-				
-				String sql = "select p_team from player_info";
+			conn = DriverManager.getConnection(url, db_id, db_pw);
 
-				psmt = conn.prepareStatement(sql);				
-				rs = psmt.executeQuery();
-				
-				if (rs.next()) {
-					if (rs.getInt(1) != 0) {
-						System.out.println("이미 선택한 팀이 존재합니다!!");
-					}
+			String name = dto.getName();
+
+			String sql = "select p_team from player_info where p_nickname = ?";
+
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, name);
+			rs = psmt.executeQuery();
+
+			if (rs.next()) {
+				if (rs.getInt(1) != 0) {
+					System.out.println("이미 선택한 팀이 존재합니다!!");
 				}
 			}
+		}
 			
-			catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+			
+		finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+
+				if (psmt != null) {
+					psmt.close();
+				}
+
+				if (conn != null) {
+					conn.close();
+					}
+			} 
+				
 			catch (SQLException e) {
 				e.printStackTrace();
 			}
-			
-			finally {
-
-				try {
-					if (rs != null) {
-						rs.close();
-					}
-
-					if (psmt != null) {
-						psmt.close();
-					}
-
-					if (conn != null) {
-						conn.close();
-					}
-				} 
-				
-				catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+		}
 	}
 }
