@@ -14,12 +14,12 @@ public class DAO {
 	int defense;
 	int defense_sub;
 	int teamId;
-	
+
 	String Id;
 	String pw;
 	String nickname;
-	String sql;	
-	
+	String sql;
+
 	Connection conn; // DB 연결 객체
 	PreparedStatement psmt; // SQL문 전달받아 실행하는 객체
 	ResultSet rs; // Query의 결과값을 받아오는 객체
@@ -72,8 +72,8 @@ public class DAO {
 			psmt.setString(3, name);
 
 			cnt = psmt.executeUpdate();
-		} 
-		
+		}
+
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -132,7 +132,7 @@ public class DAO {
 				}
 			}
 		}
-		
+
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -372,7 +372,7 @@ public class DAO {
 		psmt = null;
 
 		Connection();
-		
+
 		try {
 			String sql = "select team_id from player_info where nickname = ?";
 
@@ -381,11 +381,10 @@ public class DAO {
 			rs = psmt.executeQuery();
 
 			if (rs.next()) {
-				teamId = rs.getInt(1);				
+				teamId = rs.getInt(1);
 			}
-			
-		}
-		catch (SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
@@ -491,38 +490,37 @@ public class DAO {
 		cnt = 0;
 		conn = null;
 		psmt = null;
-		
+
 		try {
 
 			Connection();
-			
+
 			String sql = "select * from athlete a, player_info p where p.team_id = a.team_id and p.nickname = ? and a.attack!=0";
-			
+
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getName());
 			rs = psmt.executeQuery();
-			
+
 			System.out.println("┌────────┬────────┬────────┐");
-			System.out.println("│ NUMBER │  NAME  │ ATTACK │");			
-			
+			System.out.println("│ NUMBER │  NAME  │ ATTACK │");
+
 			while (rs.next()) {
 				int back = rs.getInt("back_number");
 				String name = rs.getString("name");
 				String attack = rs.getString("attack");
-				
+
 				System.out.print("│   " + back + "   ");
 				System.out.print("│  " + name + "  ");
-				System.out.print("│   " + attack +"   │");
-				System.out.println();				
+				System.out.print("│   " + attack + "   │");
+				System.out.println();
 			}
 			System.out.println("└────────┴────────┴────────┘");
-		} 
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
-		
-		finally {			
-			UnConnection();			
+		}
+
+		finally {
+			UnConnection();
 		}
 	}
 
@@ -530,10 +528,10 @@ public class DAO {
 		cnt = 0;
 		conn = null;
 		psmt = null;
-		
+
 		try {
 			Connection();
-			
+
 			String sql = "select * from athlete where team_id != (select team_id from PLAYER_INFO where nickname = ?) and defense > 0";
 
 			psmt = conn.prepareStatement(sql);
@@ -543,11 +541,10 @@ public class DAO {
 			System.out.println("◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆");
 			System.out.println("       !상대 투수 등판!");
 			System.out.println("◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇");
-		} 
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
-		
+		}
+
 		finally {
 			UnConnection();
 		}
@@ -557,12 +554,12 @@ public class DAO {
 		cnt = 0;
 		conn = null;
 		psmt = null;
-		
+
 		try {
 			Connection();
-			
+
 			String sql = "select * from athlete a, player_info p where p.team_id = a.team_id and p.nickname =? and back_number=?";
-			
+
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getName());
 			psmt.setInt(2, num);
@@ -573,123 +570,144 @@ public class DAO {
 				String back_number = rs.getString("back_number");
 				System.out.printf("선택한 선수는 %s(%s번)입니다", name, back_number);
 				System.out.println();
-			}			
-		} 
-		catch (SQLException e) {
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
-		
+		}
+
 		finally {
 			UnConnection();
-		}		
+		}
 	}
-	
-	
-	public int Gaming(int num) {		
+
+	public int Gaming(int num) {
 		Main main;
-		
+
 		attack = 0;
-		attack_sub = 0;		
+		attack_sub = 0;
 		cnt = 0;
 		conn = null;
-		psmt = null;		
-		
+		psmt = null;
+
 		try {
 			Connection();
-			
+
 			sql = "select * from athlete where back_number = ?";
-			
+
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, num);
 			rs = psmt.executeQuery();
-			
+
 			// 타자 공격력
 			if (rs.next()) {
 				attack = rs.getInt("attack");
 				System.out.println("선택한 선수의 공격력은【" + attack + "】입니다.");
 				System.out.println("◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈");
-				
+
 				main = new Main();
 				main.sleep(600);
 				attack_sub = attack;
 			}
-		}	
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		finally {
 			UnConnection();
 		}
-		
+
 		return attack_sub;
 	}
-	
-	
+
 	public int Gaming_defense(int j) {
 		defense = 0;
 		defense_sub = 0;
 		cnt = 0;
 		conn = null;
-		psmt = null;	
-		
+		psmt = null;
+
 		try {
 			Connection();
 
 			sql = "select * from athlete where back_number = ?";
-			
+
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, j);
 			rs = psmt.executeQuery();
 
 			if (rs.next()) {
 				defense = rs.getInt("defense");
-				System.out.println();
-			}
-			// 타자 공격력
-			if (rs.next()) {
-				defense = rs.getInt("defense");
+				System.out.println(defense);
 				System.out.println();
 				defense_sub = defense;
 			}
-		} 
-		catch (SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		finally {
 			UnConnection();
 		}
-		
+
 		return defense_sub;
 	}
-	
-	
-	public void rankingP(int rp, String nickname) {
+
+	public int rankingP(int rp, String nickname) {
+		String sql;
+		int result = 0;
 		try {
-			Connection();
-			
-			String sql = "insert into ranking values (?,?)";
-			
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
+			String db_id = "campus_f_0516_5";
+			String db_pw = "smhrd5";
+			conn = DriverManager.getConnection(url, db_id, db_pw);
+			// 먼저 랭킹을 조회
+			sql = "select * from ranking where nickname = ?";
 			psmt = conn.prepareStatement(sql);
-			psmt.setInt(1, rp);
-			System.out.println(rp);
-			psmt.setString(2, nickname);
+			psmt.setString(1, nickname);
 			System.out.println(nickname);
-			
-			cnt = psmt.executeUpdate();
-			if(cnt>0) {
-				System.out.println("랭킹등록이 완료되었습니다!!");
-			}else {
-				System.out.println("랭킹등록에 실패했습니다!!");
+			rs = psmt.executeQuery();
+			// 조회했을경우 데이터가 있다면 업데이트를
+			if (rs.next()) {
+				sql = "update ranking set point = ? where nickname = ?";
+				psmt = conn.prepareStatement(sql);
+				psmt.setInt(1, rp);
+				psmt.setString(2, nickname);
+				psmt.executeUpdate();
+				result = 1;
+				System.out.println("기존 랭킹이 업데이트 되었습니다!");
+				// 조회했을경우 데이터가 없다면 등록을
+			} else {
+				sql = "insert into ranking values (?,?)";
+				psmt = conn.prepareStatement(sql);
+				psmt.setInt(1, rp);
+				psmt.setString(2, nickname);
+				cnt = psmt.executeUpdate();
+				result = 2;
+				System.out.println("신규 랭킹이 등록 되었습니다!");
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (psmt != null) {
+					psmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		finally {
-			UnConnection();
-		}
+		return result;
 	}
+
 }

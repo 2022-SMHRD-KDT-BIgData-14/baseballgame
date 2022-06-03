@@ -1,1 +1,1 @@
-select * from player_info;
+select * from ranking;
