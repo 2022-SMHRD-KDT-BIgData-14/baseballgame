@@ -8,7 +8,17 @@ import java.util.Scanner;
 public class Main extends Thread {
 
 	public static void main(String[] args) {
+		
+		int cp = 0;
+		int rp = 0;
+		int num = 0;
 
+		int sub = 0;
+		int out = 0;
+		int stk = 0;
+		int bun = 0;
+		int score = 0;
+		
 		Scanner input = new Scanner(System.in);
 		Random r1 = new Random();
 		ArrayList<Integer> att = new ArrayList<Integer>();
@@ -30,7 +40,7 @@ public class Main extends Thread {
 			System.out.println("└───────────────────────────────────────┘");
 
 			System.out.print("메뉴를 선택하세요 >> ");
-			int num = input.nextInt();
+			num = input.nextInt();
 
 			if (num == 1) {
 				System.out.println("┌───────────────────────────────────────┐");
@@ -148,94 +158,119 @@ public class Main extends Thread {
 							num = input.nextInt();
 
 							if (num == 1) {
-								// 내팀 타자 명단 조회
-								dao.athlete(dto);
+								while (out <= 2) {
+									dao.athlete_sub(dto);
+									
+									for (int i = 72; i <= 101; i++) {
+										def.add(i);
+									}
+									
+									int k = r1.nextInt(30);
+									int j = def.get(k);
 								
-								//타자 호출
-								System.out.print("내 타자 선택를 선택하세요 : ");
-								num = input.nextInt();
+									dao.athlete(dto);
+									
+									System.out.println("◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈");
+									System.out.print("타자로 선택할 선수의 번호를 입력해 주세요 >> ");
+									num = input.nextInt();
+									
+									int attack_s = dao.Gaming(num);
+									int defense_s = dao.Gaming_defense(j);
+									sub = attack_s - defense_s;
+									
+									if (sub % 7 == 0) {
+										System.out.println("3루타!");
+										score = score + 3;
+										cp = cp + 3;
+										rp = rp + 3;
+										bun = 0;
+										stk = 0;
+										System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
+									}									
+									else if (sub % 6 == 0 && sub != 24) {
+										System.out.println("2루타!");
+										score = score + 2;
+										cp = cp + 2;
+										rp = rp + 2;
+										bun = 0;
+										stk = 0;
+										System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
+									}									
+									else if (sub % 5 == 0 && sub != 25) {
+										System.out.println("1루타!");
+										score = score + 1;
+										cp = cp + 1;
+										rp = rp + 1;
+										bun = 0;
+										stk = 0;
+										System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
+									}
+									else if (sub == 8) {
+										System.out.println("도루 성공!!");
+										score = score + 1;
+										cp = cp + 1;
+										rp = rp + 1;
+										bun = 0;
+										stk = 0;
+										System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
+									}
+									else if (sub == 1 || sub == 2 || sub == 23) {
+										bun++;
+										if (bun == 1) {
+											System.out.println("번트 실패! 아웃!!");
+											out = out + 1;
+											System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
+										} 
+										else {
+											System.out.println("연속 번트 실패!");
+											System.out.println("획득 점수 : " + score + "\t" + "BUNT OUT");
+											break;
+										}
+									}
+									else if (sub == 0 || sub == 24 || sub == 25) {
+										System.out.println("!!!!HOMERUN!!!!");
+										score = score + 5;
+										cp = cp + 5;
+										rp = rp + 5;
+										stk = 0;
+										bun = 0;
+										System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
+									}
+									else if(sub < 0) {
+										System.out.println("헛스윙!!");
+										stk++;
+										bun = 0;
+										System.out.println(stk + "Strike");
+										if (stk == 3) {
+											System.out.println("3Strike... OUT!!");
+											stk = 0;
+											out = out + 1;
+											System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
+										}
+									}
+									else {
+										System.out.println("헛스윙!!");
+										stk++;
+										bun = 0;
+										System.out.println(stk + "Strike");
+										
+										if (stk == 3) {
+											System.out.println("3Strike... OUT!!");
+											stk = 0;
+											out = out + 1;
+											System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
+										}
+									}
+								}
 								
-								dao.athlete_sub2(dto);								
-								
-								// 내팀에 속한 투수를 제외한 나머지 팀의 투수를 호출
-								dao.athlete_sub(dto);
-
-//								try {
-//									// c : 내가 선택 할 선수 번호
-//									int c = input.nextInt() - 1;
-//
-//									// sub : 내 타자와 상태 투수의 능력치 차이
-//									int sub = Math.abs(game_atk.get(c) - def);
-//
-//									if (sub % 7 == 0) {
-//										System.out.println("3루타!");
-//										score = score + 3;
-//										cp = cp + 3;
-//										rp = rp + 3;
-//										bun = 0;
-//										stk = 0;
-//										System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
-//									} else if (sub % 6 == 0 && sub != 24) {
-//										System.out.println("2루타!");
-//										score = score + 2;
-//										cp = cp + 2;
-//										rp = rp + 2;
-//										bun = 0;
-//										stk = 0;
-//										System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
-//									} else if (sub % 5 == 0 && sub != 25) {
-//										System.out.println("1루타!");
-//										score = score + 1;
-//										cp = cp + 1;
-//										rp = rp + 1;
-//										bun = 0;
-//										stk = 0;
-//										System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
-//									} else if (sub == 1 || sub == 2 || sub == 23) {
-//										bun++;
-//										if (bun == 1) {
-//											System.out.println("번트 실패! 아웃!!");
-//											out = out + 1;
-//											game_atk.set(c, null);
-//											System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
-//										} else {
-//											System.out.println("연속 번트 실패!");
-//											System.out.println("획득 점수 : " + score + "\t" + "BUNT OUT");
-//											break;
-//										}
-//									} else if (sub == 0 || sub == 24 || sub == 25) {
-//										System.out.println("홈런!!!!!!");
-//										score = score + 5;
-//										cp = cp + 5;
-//										rp = rp + 5;
-//										stk = 0;
-//										bun = 0;
-//										System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
-//									} else {
-//										System.out.println("헛스윙!!");
-//										stk++;
-//										bun = 0;
-//										System.out.println(stk + "스트라이크");
-//										if (stk == 3) {
-//											System.out.println("3스트라이크...아웃!!");
-//											stk = 0;
-//											out = out + 1;
-//											game_atk.set(c, null);
-//											System.out.println("획득 점수 : " + score + "\t" + "OUT : " + out);
-//										}
-//									}
-//
-//								} catch (NullPointerException e) {
-//									System.out.println("아웃된 선수는 선택할수없습니다");
-//								}
-//							}
-//							if (out == 3) {
-//								System.out.println("3아웃으로 게임이 끝났습니다" + "\t" + "메뉴화면으로 돌아갑니다.");
-//							} else {
-//								System.out.println("연속된 번트실패의 패널티로 게임이 끝났습니다.");
-//							}
-//						}
-
+								// while 가로
+								if (out == 3) {
+									System.out.println("3OUT으로 게임이 끝났습니다" + "\t" + "메뉴화면으로 돌아갑니다.");
+									dao.rankingP(rp, inName);
+								} else {
+									System.out.println("2연속 번트 실패의 패널티로 게임이 끝났습니다.");
+									dao.rankingP(rp, inName);
+								}								
 							}
 
 							else if (num == 2) {

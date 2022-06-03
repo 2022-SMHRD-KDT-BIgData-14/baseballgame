@@ -1,20 +1,25 @@
 package BaseBall;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class DAO {
 
 	int cnt;
+	int attack;
+	int attack_sub;
+	int defense;
+	int defense_sub;
 	int teamId;
+	
 	String Id;
 	String pw;
 	String nickname;
+	String sql;	
+	
 	Connection conn; // DB 연결 객체
 	PreparedStatement psmt; // SQL문 전달받아 실행하는 객체
 	ResultSet rs; // Query의 결과값을 받아오는 객체
@@ -483,119 +488,208 @@ public class DAO {
 	}
 
 	public void athlete(DTO dto) {
-
 		cnt = 0;
+		conn = null;
+		psmt = null;
+		
 		try {
 
 			Connection();
+			
 			String sql = "select * from athlete a, player_info p where p.team_id = a.team_id and p.nickname = ? and a.attack!=0";
+			
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getName());
 			rs = psmt.executeQuery();
-			System.out.print("NAME" + "\t");
-			System.out.print("ATTACK" + "\t");
-			System.out.println();
+			
+			System.out.println("┌────────┬────────┬────────┐");
+			System.out.println("│ NUMBER │  NAME  │ ATTACK │");			
+			
 			while (rs.next()) {
+				int back = rs.getInt("back_number");
 				String name = rs.getString("name");
 				String attack = rs.getString("attack");
-				System.out.print(name + "\t");
-				System.out.print("  " + attack + "\t");
-				System.out.println();
-
+				
+				System.out.print("│   " + back + "   ");
+				System.out.print("│  " + name + "  ");
+				System.out.print("│   " + attack +"   │");
+				System.out.println();				
 			}
-		} catch (SQLException e) {
+			System.out.println("└────────┴────────┴────────┘");
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("DB 접속 실패");
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (psmt != null) {
-					psmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		} 
+		
+		finally {			
+			UnConnection();			
 		}
 	}
 
 	public void athlete_sub(DTO dto) {
-
 		cnt = 0;
+		conn = null;
+		psmt = null;
+		
 		try {
-
 			Connection();
+			
 			String sql = "select * from athlete where team_id != (select team_id from PLAYER_INFO where nickname = ?) and defense > 0";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getName());
 			rs = psmt.executeQuery();
 
-			System.out.println("상대 투수 등판!");
-		} catch (SQLException e) {
+			System.out.println("◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆");
+			System.out.println("       !상대 투수 등판!");
+			System.out.println("◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇");
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
-
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (psmt != null) {
-					psmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		} 
+		
+		finally {
+			UnConnection();
 		}
 	}
 
-	public void athlete_sub2(DTO dto) {
-
+	public void athlete_sub2(DTO dto, int num) {
 		cnt = 0;
+		conn = null;
+		psmt = null;
+		
 		try {
-
 			Connection();
+			
 			String sql = "select * from athlete a, player_info p where p.team_id = a.team_id and p.nickname =? and back_number=?";
+			
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, dto.getName());
-			psmt.setInt(2, dto.getBack_number());
+			psmt.setInt(2, num);
 			rs = psmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				String name = rs.getString("name");
-				String back = rs.getString("back_number");
-				System.out.print(name + "\t");
-				System.out.print(back + "\t");
+				String back_number = rs.getString("back_number");
+				System.out.printf("선택한 선수는 %s(%s번)입니다", name, back_number);
 				System.out.println();
-			}
-			
-			
-			
-		} catch (SQLException e) {
+			}			
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("DB 접속 실패");
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (psmt != null) {
-					psmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+		} 
+		
+		finally {
+			UnConnection();
+		}		
+	}
+	
+	
+	public int Gaming(int num) {		
+		Main main;
+		
+		attack = 0;
+		attack_sub = 0;		
+		cnt = 0;
+		conn = null;
+		psmt = null;		
+		
+		try {
+			Connection();
+			
+			sql = "select * from athlete where back_number = ?";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, num);
+			rs = psmt.executeQuery();
+			
+			// 타자 공격력
+			if (rs.next()) {
+				attack = rs.getInt("attack");
+				System.out.println("선택한 선수의 공격력은【" + attack + "】입니다.");
+				System.out.println("◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈");
+				
+				main = new Main();
+				main.sleep(600);
+				attack_sub = attack;
 			}
+		}	
+		catch (SQLException e) {
+			e.printStackTrace();
 		}
 		
+		finally {
+			UnConnection();
+		}
+		
+		return attack_sub;
+	}
+	
+	
+	public int Gaming_defense(int j) {
+		defense = 0;
+		defense_sub = 0;
+		cnt = 0;
+		conn = null;
+		psmt = null;	
+		
+		try {
+			Connection();
+
+			sql = "select * from athlete where back_number = ?";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, j);
+			rs = psmt.executeQuery();
+
+			if (rs.next()) {
+				defense = rs.getInt("defense");
+				System.out.println();
+			}
+			// 타자 공격력
+			if (rs.next()) {
+				defense = rs.getInt("defense");
+				System.out.println();
+				defense_sub = defense;
+			}
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		finally {
+			UnConnection();
+		}
+		
+		return defense_sub;
+	}
+	
+	
+	public void rankingP(int rp, String nickname) {
+		try {
+			Connection();
+			
+			String sql = "insert into ranking values (?,?)";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, rp);
+			System.out.println(rp);
+			psmt.setString(2, nickname);
+			System.out.println(nickname);
+			
+			cnt = psmt.executeUpdate();
+			if(cnt>0) {
+				System.out.println("랭킹등록이 완료되었습니다!!");
+			}else {
+				System.out.println("랭킹등록에 실패했습니다!!");
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		finally {
+			UnConnection();
+		}
 	}
 }

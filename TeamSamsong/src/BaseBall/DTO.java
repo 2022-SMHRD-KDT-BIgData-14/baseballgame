@@ -4,23 +4,7 @@ public class DTO {
 
 	private String id, pw, name;
 	private int teamId;
-	private int back_number;
 	
-	public DTO(int back_number) {
-		
-		this.back_number = back_number;
-	}
-
-
-
-	public int getBack_number() {
-		return back_number;
-	}
-
-	public void setBack_number(int back_number) {
-		this.back_number = back_number;
-	}
-
 	public DTO(String name) {
 		this.name = name;
 	}
@@ -78,10 +62,5 @@ public class DTO {
 
 	public void setTeamName(int teamId) {
 		this.teamId = teamId;
-	}
-
-	
-
-	
-	
+	}	
 }
